@@ -12,7 +12,7 @@ const refs = {
   countryInfo: document.querySelector('.country-info'),
 };
 
-function onSearch() {
+function onSearchCountry() {
   const countryName = refs.inputSearch.value.trim();
   fetchCountries(countryName);
 
@@ -25,7 +25,10 @@ function onSearch() {
   refs.countryInfo.innerHTML = '';
 }
 
-refs.inputSearch.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
+refs.inputSearch.addEventListener(
+  'input',
+  debounce(onSearchCountry, DEBOUNCE_DELAY)
+);
 
 function countryRender(countries) {
   if (countries.length > 10) {
