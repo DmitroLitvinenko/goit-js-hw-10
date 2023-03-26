@@ -12,7 +12,7 @@ function fetchCountries(countryName) {
       }
       return response.json();
     })
-    .then(countries => countryRender(countries))
+    .then(countries => countryRender)
     .catch(error => Notify.failure('Oops, there is no country with that name'));
 }
 
