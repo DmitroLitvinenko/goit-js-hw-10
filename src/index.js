@@ -1,6 +1,6 @@
 import debounce from 'lodash.debounce';
 import { Notify } from 'notiflix';
-import { fetchCountries } from './js/fetchCountries';
+import { fetchCountries } from './fetchCountries';
 import './css/styles.css';
 export { renderCountry };
 

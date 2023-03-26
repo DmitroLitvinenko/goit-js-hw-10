@@ -1,5 +1,5 @@
 import { Notify } from 'notiflix';
-import { renderCountry } from '../index';
+import { renderCountry } from './index';
 export { fetchCountries };
 
 function fetchCountries(countryName) {
