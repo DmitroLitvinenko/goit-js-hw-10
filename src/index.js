@@ -2,7 +2,7 @@ import debounce from 'lodash.debounce';
 import { Notify } from 'notiflix';
 import { fetchCountries } from './fetchCountries';
 import './css/styles.css';
-export { renderCountry };
+export { countryRender };
 
 const DEBOUNCE_DELAY = 300;
 
@@ -27,7 +27,7 @@ function onSearch() {
 
 refs.inputSearch.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
 
-function renderCountry(countries) {
+function countryRender(countries) {
   if (countries.length > 10) {
     Notify.warning(
       'Too many matches found. Please enter a more specific name.'

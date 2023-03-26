@@ -1,5 +1,5 @@
 import { Notify } from 'notiflix';
-import { renderCountry } from './index';
+import { countryRender } from './index';
 export { fetchCountries };
 
 function fetchCountries(countryName) {
@@ -12,11 +12,11 @@ function fetchCountries(countryName) {
       }
       return response.json();
     })
-    .then(countries => renderCountry(countries))
+    .then(countries => countryRender(countries))
     .catch(error => Notify.failure('Oops, there is no country with that name'));
 }
 
-function renderCountry() {
+function countryRender() {
   countries => {
     if (countries.length > 10) {
       Notify.warning(
