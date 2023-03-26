@@ -1,7 +1,8 @@
-// import fetchCountries from './fetchCountries';
 import debounce from 'lodash.debounce';
-import Notiflix, { Notify } from 'notiflix';
+import { Notify } from 'notiflix';
+import { fetchCountries } from './fetchCountries';
 import './css/styles.css';
+export { renderCountry };
 
 const DEBOUNCE_DELAY = 300;
 
@@ -10,34 +11,50 @@ const refs = {
   countryList: document.querySelector('.country-list'),
   countryInfo: document.querySelector('.country-info'),
 };
-const country = '';
+
+function onSearch() {
+  const countryName = refs.inputSearch.value.trim();
+  fetchCountries(countryName);
+
+  if (countryName === '') {
+    refs.countryList.innerHTML = '';
+    refs.countryInfo.innerHTML = '';
+    return;
+  } else countryName === refs.inputSearch.value;
+  refs.countryList.innerHTML = '';
+  refs.countryInfo.innerHTML = '';
+}
 
 refs.inputSearch.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
 
-function fetchCountries(countryName) {
-  fetch(
-    `https://restcountries.com/v3.1/name/${countryName}?fields=name,capital,population,flags.svg,languages`
-  )
-    .then(response => response.json())
-    .then(country => {
-      if (country.length > 10) {
-        Notify.warning(
-          'Too many matches found. Please enter a more specific name.'
-        );
-      } else if (country.length >= 2 && country.length <= 10) {
-        const result = country.map(name =>
-          `<img src="${name.flags.svg}" alt="${name.name.official} flag">
-        <span>${name.name.official}</span>`.json('')
-        );
-        console.log(result);
-        result.insertAdjacentHtml(beforeend, countryList);
-      }
-      console.log(country);
-    });
-}
-
-function onSearch() {
-  const countryName = refs.inputSearch.value;
-  console.dir(refs.inputSearch);
-  fetchCountries(countryName);
+function renderCountry(countries) {
+  if (countries.length > 10) {
+    Notify.warning(
+      'Too many matches found. Please enter a more specific name.'
+    );
+  } else if (countries.length >= 2 && countries.length <= 10) {
+    const result = countries
+      .map(
+        country =>
+          `<li> <img src="${country.flags.svg}" alt="${country.name.official}">
+              <span>${country.name.official}</span></li>`
+      )
+      .join('');
+    refs.countryList.insertAdjacentHTML('beforeend', result);
+  } else if (countries.length === 1) {
+    const country = countries[0];
+    const result = `
+                  <div class="container">
+                  <img src="${country.flags.svg}" alt="${
+      country.name.official
+    } flag">
+        <h2>${country.name.official}</h2></div>
+        <p>Capital: ${country.capital}</p>
+        <p>Population: ${country.population}</p>
+        <p>Languages: ${Object.values(country.languages)}</p>
+              `;
+    refs.countryInfo.insertAdjacentHTML('beforeend', result);
+  } else {
+    Notify.info('Oops, there is no country with that name');
+  }
 }
